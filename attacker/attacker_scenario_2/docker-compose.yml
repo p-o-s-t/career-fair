@@ -1,0 +1,17 @@
+services:
+  target:
+    image: docker.io/tleemcjr/metasploitable2
+    container_name: attacker_scenario_2_target
+    networks:
+      scenario_2_net:
+        ipv4_address: 172.20.0.20
+    command: >
+      sh -c "echo 'FLAG{Vsftpd_B4ckd00r_Pwn3d}' > /flag.txt && /bin/services.sh && tail -f /dev/null"
+
+networks:
+  scenario_2_net:
+    name: attacker_scenario_2_net
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/24

@@ -1,0 +1,19 @@
+services:
+  target:
+    image: docker.io/tleemcjr/metasploitable2
+    container_name: attacker_scenario_1_target
+    volumes:
+      - ./index.php:/var/www/index.php
+    networks:
+      scenario_1_net:
+        ipv4_address: 172.20.0.10
+    command: >
+      sh -c "echo 'FLAG{C0mmand_Inj3cti0n_Succ3ss}' > /flag.txt && /bin/services.sh && tail -f /dev/null"
+
+networks:
+  scenario_1_net:
+    name: attacker_scenario_1_net
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/24

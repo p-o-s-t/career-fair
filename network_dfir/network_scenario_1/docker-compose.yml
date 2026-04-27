@@ -1,0 +1,16 @@
+services:
+  wireshark:
+    image: lscr.io/linuxserver/wireshark:latest
+    container_name: wireshark_scenario_1
+    security_opt:
+      - seccomp:unconfined # Required for some Wireshark operations
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - ./:/data
+    ports:
+      - 3000:3000 # Web UI
+      - 3001:3001 # HTTPS Web UI
+    restart: unless-stopped

@@ -1,0 +1,13 @@
+services:
+  splunk:
+    image: splunk/splunk:latest
+    container_name: splunk_scenario_2
+    environment:
+      - SPLUNK_START_ARGS=--accept-license
+      - SPLUNK_GENERAL_TERMS=--accept-sgt-current-at-splunk-com
+      - SPLUNK_PASSWORD=CareerFair2026!
+    ports:
+      - 8000:8000
+    volumes:
+      - ./botsv3_data_set:/opt/splunk/etc/apps/botsv3_data_set
+    restart: unless-stopped
