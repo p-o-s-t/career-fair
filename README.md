@@ -32,3 +32,9 @@ tar -xzf botsv3_data_set.tgz -C ./host_dfir/host_scenario_2/
 3. Participants will follow the walkthrough guide in each respective scenario.
 
 4. When the participant(s) are done, they can reset the scenario easily with `./scenario_*.sh reset` to let the next person try out the scenario.
+
+## Acknowledgements
+These scenarios would not have been possible without the files provided by
+- malware-traffic-analysis.net
+- Splunk
+- Unit42
