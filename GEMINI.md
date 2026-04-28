@@ -10,13 +10,13 @@ This project provides a playground environment across three specialized Ubuntu l
 ## Project Structure
 ```text
 /
-├── attacker/           # Laptop 1: Red Team / Offensive Scenarios
+├── attacker/           # Red Team / Offensive Scenarios
 │   ├── attacker_scenario_1/   # Web Enumeration & Command Injection
 │   └── attacker_scenario_2/   # Distcc Exploit & Bind Shells
-├── host_dfir/          # Laptop 2: Host Forensics Scenarios
+├── host_dfir/          # Host Forensics Scenarios
 │   ├── host_scenario_1/       # PowerShell Malware Analysis (CyberChef)
 │   └── host_scenario_2/       # Splunk-based Investigation (BOTSv3)
-└── network_dfir/       # Laptop 3: Network Forensics Scenarios
+└── network_dfir/       # Network Forensics Scenarios
     ├── network_scenario_1/    # Traffic Analysis (Wireshark/PCAP)
     └── network_scenario_2/    # Advanced Traffic Analysis
 ```
