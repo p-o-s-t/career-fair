@@ -50,5 +50,5 @@ This project provides a playground environment across three specialized Ubuntu l
 ## Operational Commands
 Each scenario directory contains a `scenarioX.sh` script to manage the life cycle:
 - `./scenarioX.sh start`: Launches the environment.
-- `./scenarioX.sh stop`: Shuts down the environment.
+- `./scenarioX.sh stop`:  Shuts down the environment.
 - `./scenarioX.sh reset`: Wipes all changes and restarts from a clean state.
