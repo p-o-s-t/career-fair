@@ -1,15 +1,16 @@
-# Host DFIR Scenario 2: SIEM Analysis (Resource Hijacking & Cloud Breach)
+# Host DFIR Scenario 2: SIEM Analysis to Identify Resource Hijacking & Cloud Breach
 
 ## Background
 As a SOC (Security Operations Center) Analyst, you've been alerted to unusual billing spikes and potential resource hijacking in the company's cloud environment. You have access to **Splunk**, which aggregates logs from all hosts and cloud services (AWS).  Your goal is to use Splunk to identify a process suspected of unauthorized cryptomining and investigate a potential data breach involving an exposed storage bucket.
 
 ## Instructions
-
 ### 1. Accessing Splunk
 1. Open a web browser and go to `http://localhost:8000`.
+
 2. Log in with the following credentials:
    - **Username:** `admin`
    - **Password:** `CareerFair2026!`
+
 3. Click on **Search & Reporting** on the left side.
 
 ### 2. Initial Data Overview
