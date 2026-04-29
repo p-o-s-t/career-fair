@@ -7,7 +7,6 @@ Identify a vulnerable web application on a highly insecure host, explore its fun
 You are working from an Ubuntu workstation on a target network. Your initial reconnaissance has identified a potential host at IP address `172.20.0.10`. This machine is known as "Metasploitable," a Linux distribution intentionally configured with numerous vulnerabilities. Your task is to investigate this server and see if you can gain further access via its web services.
 
 ## Steps
-
 ### 1. Enumeration
 First, let's see what services are running on the target. Open a terminal on your workstation:
 

@@ -1,8 +1,5 @@
 #!/bin/bash
-
-# Management script for Network Scenario 2
-
-ACTION=$1        # start, stop, reset
+ACTION=$1 # start, stop, reset
 
 if [[ -z "$ACTION" ]]; then
     echo "Usage: $0 <start|stop|reset>"
