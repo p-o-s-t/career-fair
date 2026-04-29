@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scenario 2: IcedID Malware Analysis</title>
+</head>
+<body>
+    <h1>Scenario 2: IcedID Malware Analysis</h1>
+
+    <h2>Background</h2>
+    <p>An Active Directory environment has been targeted by a malware campaign. You are tasked with analyzing the packet capture from the infected network. Your goal is to identify the source of the infection, the specific workstation compromised, and the attacker's persistent Command & Control (C2) infrastructure.</p>
+
+    <h2>Objectives</h2>
+    <ol>
+        <li>Identify the IP address and filename of the initial IcedID payload.</li>
+        <li>Determine the Hostname, IP address, and MAC address of the infected workstation.</li>
+        <li>Identify the primary IP address used for persistent C2/BackConnect communication.</li>
+    </ol>
+
+    <h2>Guided Walkthrough</h2>
+
+    <h3>Step 1: Access the Analysis Environment</h3>
+    <ol>
+        <li>Open a web browser on the host machine.</li>
+        <li>Navigate to <code>http://localhost:3002</code>.</li>
+        <li>You will see a desktop environment containing <b>Wireshark</b>.</li>
+    </ol>
+
+    <h3>Step 2: Open the PCAP</h3>
+    <p>In the Wireshark application (inside the browser), go to <b>File > Open</b> and navigate to the following path: <code>/data/scenario_2.pcap</code></p>
+
+    <h3>Step 3: Identify the Initial Redirect</h3>
+    <p>Attackers often use a "redirector" to send victims to the final malware hosting site.</p>
+    <ul>
+        <li><b>Filter:</b> <code>http.request.uri contains "main.php"</code></li>
+        <li><b>Analysis:</b>
+            <ol>
+                <li>Locate the packet showing the GET request to <code>80.77.25.175</code>.</li>
+                <li><b>Right-click</b> that packet and select <b>Follow > HTTP Stream</b>.</li>
+            </ol>
+        </li>
+        <li><b>What you see:</b> A new window will open showing the full conversation. Notice the <b>Location</b> field in the server's response pointing to a <code>.zip</code> file on Google Firebase.</li>
+        <li><b>The "Why":</b> "Following the stream" allows a forensic analyst to see exactly what the user saw and how the server responded, revealing the next step in the attack chain.</li>
+    </ul>
+
+    <h3>Step 4: Identify the Victim & Malicious Download</h3>
+    <p>Once you see where the redirect points, you can identify the file being downloaded and the computer that requested it.</p>
+    <ul>
+        <li><b>Filter:</b> <code>http.location contains "Scan_Inv.zip"</code></li>
+        <li><b>Analysis:</b>
+            <ol>
+                <li>Identify the <b>Source IP</b> address that requested the file. This is your victim.</li>
+                <li>Click on the packet, and in the <b>Packet Details</b> pane (middle), expand the <b>Ethernet II</b> section to find the <b>Source MAC Address</b>.</li>
+                <li>Change your filter to <code>nbns || kerberos</code> to look for name service traffic from the victim's IP to find their <b>Hostname</b>.</li>
+            </ol>
+        </li>
+        <li><b>What you see:</b> You will see the victim IP (<code>10.4.19.136</code>) requesting the malicious ZIP file, and subsequent traffic revealing the computer name.</li>
+        <li><b>The "Why":</b> You cannot contain an incident until you know exactly which physical device is "patient zero" and what specific file started the infection.</li>
+    </ul>
+
+    <h3>Step 5: Locate the Persistent C2 "BackConnect"</h3>
+    <p>IcedID uses a specific "BackConnect" protocol for remote control, often over port 443 but without standard HTTPS web traffic.</p>
+    <ul>
+        <li><b>Filter:</b> <code>tcp.flags.syn == 1 && tcp.port == 443</code></li>
+        <li><b>Analysis:</b> Look for an IP address that the victim workstation connects to repeatedly <i>after</i> the infection time, where the traffic does not look like normal web browsing (no SNI or certificate info).</li>
+        <li><b>The "Why":</b> The BackConnect server is the attacker's "remote desktop" into your network. Finding this IP is the top priority for stopping the attacker's active control.</li>
+    </ul>
+
+    <h2>Conclusion</h2>
+    <p>By following these steps, you have successfully identified the delivery vector, the compromised workstation's identity, and the active C2 server.</p>
+
+    <h2>Cleanup & Reset</h2>
+    <p>To ensure the environment is ready for the next candidate, please perform the following steps:</p>
+    <ol>
+        <li>Close the web browser.</li>
+        <li>In the terminal window, run the following command to reset the scenario:
+            <pre><code>./net_dfir_2/scenario.sh reset</code></pre>
+        </li>
+    </ol>
+</body>
+</html>

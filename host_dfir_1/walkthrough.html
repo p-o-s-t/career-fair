@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Host Scenario 1: Reversing Obfuscated PowerShell</title>
+</head>
+<body>
+    <h1>Host Scenario 1: Reversing Obfuscated PowerShell</h1>
+
+    <h2>Background</h2>
+    <p>During a routine sweep of a workstation, a suspicious PowerShell script was found in the <code>C:\Users\Public\Documents\</code> directory. The script appears to contain an encoded blob that is decoded and executed at runtime. Your goal is to use <b>CyberChef</b> to reveal the hidden command and understand what changes it makes to the system.</p>
+
+    <h2>Objectives</h2>
+    <ol>
+        <li>Identify the encoding and encryption methods used in the script.</li>
+        <li>Use CyberChef to decode the <code>$EncodedBlob</code>.</li>
+        <li>Determine the final command being executed and the registry key it modifies.</li>
+    </ol>
+
+    <h2>Walkthrough</h2>
+    <h3>Step 1: Open CyberChef</h3>
+    <ol>
+        <li>Open a web browser and select the bookmark for CyberChef. This will open a local copy of <b>CyberChef</b> that is located in the <code>host_dfir/host_scenario_1</code> directory.</li>
+        <li>Once CyberChef is open, select the rectangle with an arrow pointed towards the right to import a file from the system. Import <code>host_dfir/host_scenario_1/encoded_malware.ps1</code>.</li>
+    </ol>
+
+    <h3>Step 2: Decode the Payload</h3>
+    <ol>
+        <li>There is some encoded data contained within this PowerShell script. Identify it, copy the encoded data, and paste it into a new input tab by selecting the plus sign in the top right.</li>
+        <li>In CyberChef, drag the following "Operations" from the left pane into the "Recipe" pane in order (some of these options may be suggested to you from the CyberChef wizard):
+            <ul>
+                <li><b>From Base64</b>: This is identified by the <code>$Bytes = [System.Convert]::FromBase64String</code> line in the script.</li>
+                <li><b>Gunzip</b>: This matches the <code>GzipStream</code> line in the script.</li>
+                <li><b>XOR Brute Force</b>: Without knowing the key used for the XOR operation, we can brute force the possible output to find the key. <i>Note: The key length is only one byte.</i></li>
+            </ul>
+        </li>
+    </ol>
+
+    <h3>Step 3: Examine the Output</h3>
+    <ol>
+        <li>Look at the <b>Output</b> pane in CyberChef. You should now see a cleartext PowerShell command!</li>
+        <li>Do some open source research on the output to learn what the malicious script is attempting to do.
+            <ul>
+                <li><b>The "Why":</b> Attackers use obfuscation (encoding, compression, and encryption) to hide their activities from antivirus software and security analysts. Learning to "peel back the layers" is a fundamental skill in <b>Malware Analysis</b>.</li>
+            </ul>
+        </li>
+    </ol>
+
+    <h2>Conclusion</h2>
+    <p>You have successfully reversed the obfuscation to reveal that the script creates a persistence mechanism in the Windows Registry to run a file named <code>totes_legit_not_malware.exe</code> on startup.</p>
+
+    <h2>Cleanup & Reset</h2>
+    <ol>
+        <li>Close the web browser.</li>
+    </ol>
+</body>
+</html>

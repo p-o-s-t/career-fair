@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Host DFIR Scenario 2: SIEM Analysis</title>
+</head>
+<body>
+    <h1>Host DFIR Scenario 2: SIEM Analysis to Identify Resource Hijacking & Cloud Breach</h1>
+
+    <h2>Background</h2>
+    <p>As a SOC (Security Operations Center) Analyst, you've been alerted to unusual billing spikes and potential resource hijacking in the company's cloud environment. You have access to <b>Splunk</b>, which aggregates logs from all hosts and cloud services (AWS). Your goal is to use Splunk to identify a process suspected of unauthorized cryptomining and investigate a potential data breach involving an exposed storage bucket.</p>
+
+    <h2>Instructions</h2>
+    <h3>1. Accessing Splunk</h3>
+    <ol>
+        <li>Open a web browser and go to <code>http://localhost:8000</code>.</li>
+        <li>Log in with the following credentials:
+            <ul>
+                <li><b>Username:</b> <code>admin</code></li>
+                <li><b>Password:</b> <code>CareerFair2026!</code></li>
+            </ul>
+        </li>
+        <li>Click on <b>Search & Reporting</b> on the left side.</li>
+    </ol>
+
+    <h3>2. Initial Data Overview</h3>
+    <p>To see all the data available in the dataset, set the time picker to <b>All Time</b> and then enter the following query:</p>
+    <pre><code>index=botsv3 earliest=0</code></pre>
+
+    <h3>3. An Exposed Bucket</h3>
+    <p>Sometimes misconfigurations can lead to sensitive storage services being exposed to the public. Use the following query to find the <code>bucketName</code> that was made public.</p>
+    <pre><code>index=botsv3 earliest=0 bstoll eventName=putbucketacl</code></pre>
+
+    <h3>4. Someone Noticed!</h3>
+    <p>Cloud storage buckets (S3) are common targets. If misconfigured, attackers can upload malicious files or exfiltrate data. Let's look for a file uploaded from a helpful individual highlighting this issue. Use the following query to find the name of the file uploaded to the public bucket.</p>
+    <pre><code>index=botsv3 earliest=0 frothlywebcode "*.txt" *PUT*</code></pre>
+
+    <h3>5. Auditing User Security (MFA)</h3>
+    <p>Identifying the IPv4 address the attacker used to login without having to use MFA. The query below shows a specific, unusual IPv4 address that is uncommon.</p>
+    <pre><code>index=botsv3 sourcetype="aws:cloudtrail" "additionalEventData.MFAUsed"=No | table eventName, userIdentity.userName, sourceIPAddress</code></pre>
+
+    <h3>6. Mining Coins</h3>
+    <p>A Frothly endpoint exhibits signs of coin mining activity. Let's see if we can find the first process to reach 100 percent CPU processor utilization time from this activity using the following query.</p>
+    <pre><code>index=botsv3 sourcetype="perfmonmk:process" "%_Processor_Time"=100 NOT (instance="Idle" OR instance="_Total" OR instance="MicrosoftEdgeCP*") | sort _time</code></pre>
+
+    <h3>7. Summary of Findings</h3>
+    <p>Using the SIEM, you've identified a rogue process hijacking system resources and traced an unauthorized cloud storage modification back to an account lacking proper MFA protections.</p>
+</body>
+</html>

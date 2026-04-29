@@ -19,12 +19,10 @@
     <p>Look for port <b>3632</b>. It should be running <code>distcc v1</code>.</p>
 
     <h3>2. Understanding Bind Shells (Forward Shells)</h3>
-    <p>In this scenario, we're going to explore the concept of a <b>Bind Shell</b>. Unlike a Reverse Shell (where the target calls you), a Bind Shell is when the target machine "binds" a shell to a specific port and waits for *you* to connect to it.</p>
-
-    <pre><b>Bind Shell</b>: Attacker-Machine ----Connects----> Victim-Machine</pre>
-
-    <pre><b>Reverse Shell</b>: Victim-Machine ----Connects----> Attacker-Machine</pre>
-
+    <p>In this scenario, we're going to explore the concept of a <b>Bind Shell</b>. Unlike a Reverse Shell (where the target calls you), a Bind Shell is when the target machine "binds" a shell to a specific port and waits for <i>you</i> to connect to it.</p>
+    <br>
+    <center><img src="./shells.gif" alt="Bind vs Reverse" width=800 height=600></center>
+    <br>
     <p>This is often used when:</p>
     <ol>
         <li>The attacker's machine is behind a firewall or NAT that prevents incoming connections.</li>
@@ -64,7 +62,7 @@
     <p>As a cybersecurity professional, your job is to find these "cracks in the armor" before an attacker does, helping developers build more resilient and secure applications.</p>
 
     <h3> 7. Cleanup</h3>
-    <p>Run <code>./scenario1.sh reset</code> to reset the scenario environment for the next user.</p>
+    <p>Run <code>./attacker_scenario_2/scenario.sh reset</code> to reset the scenario environment for the next user.</p>
 
-    </body>
+    </img>
 </html>
