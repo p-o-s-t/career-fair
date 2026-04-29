@@ -3,6 +3,13 @@
 ## Objective
 Identify a vulnerable service, research its exploitation method, and successfully execute a **Bind Shell** to gain control over a target server.
 
+### Bind vs Reverse Shell
+The machine initiating the connection will determine the type of **Shell** that is opened by a malicious cyber actor.  Regardless of direction, one of the machines must be **Listening** for a connection, which is typically initiated by the Attacker on either their machine or the victim's machine.
+
+**Bind Shell**: Attacker-Machine ----Connects----> Victim-Machine
+
+**Reverse Shell**: Victim-Machine ----Connects----> Attacker-Machine
+
 ## Scenario
 A legacy server on the network is reportedly running a distributed compiler service (`distcc`). This service, if misconfigured, can allow remote users to execute arbitrary commands. Your goal is to exploit this service to force the target to open a "backdoor" listener that you can connect to.
 
