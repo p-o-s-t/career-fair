@@ -36,20 +36,24 @@ rm CyberChef_v11.0.0.zip
 4. Download the PCAP for net_dfir_1.
 
 ```bash
-wget https://malware-traffic-analysis.net/2026/03/12/2026-03-12-SmartApeSG-ClickFix-activity-for-Remcos-RAT.pcap.zip -O scenario_1.zip
-unzip -Pinfected_20260312 scenario_1.zip -d net_dfir_1/
+wget https://malware-traffic-analysis.net/2026/03/12/2026-03-12-SmartApeSG-ClickFix-activity-for-Remcos-RAT.pcap.zip -O mta.zip
+unzip -Pinfected_20260312 mta.zip -d net_dfir_1/
 mv net_dfir_1/2026-03-12-SmartApeSG-ClickFix-activity-for-Remcos-RAT.pcap net_dfir_1/scenario_1.pcap 
-rm scenario_1.zip
+rm mta.zip
 ```
 
 ## Running Scenarios 
-1. Participants can select which scenario they want to try out by changing into that directory. There are 2 scenarios for each category: attacker, host_dfir, and network_dfir.
+1. Open a terminal, such as GNOME Terminal.
 
-2. Once in the scenario directory, run the scenario script with `./scenario.sh start`.
+2. Open `./index.html` to access a local web page with links to all of the walkthroughs. Gives the participants a 'Choose Your Own Adventure' opportunity.
 
-3. Participants will follow the walkthrough guide in each respective scenario.
+3. Participants can select which scenario they want to try out by changing into that directory. There are 2 scenarios for each category: Attacker, Host DFIR, and Network DFIR.  Each scenario has a hyperlink to a walkthrough rewritten in HTML.
 
-4. When the participant(s) are done, they can reset the scenario easily with `./scenario_*.sh reset` to let the next person try out the scenario.
+4. Once in the scenario directory, the participants can start the scenario script with `./scenario.sh start`, which is highlighted in the walkthroughs.
+
+5. Guide the participant(s) as necessary, but everything they need is in the walkthrough for each scenario.
+
+6. When the participant(s) are done, they can reset the scenario easily with `./<scenario_directory>/scenario.sh reset` to let the next person try out the scenario without giving away the answers.
 
 ## Acknowledgements
 These scenarios would not have been possible without the files provided by

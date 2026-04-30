@@ -2,3 +2,4 @@ https://malware-traffic-analysis.net/2026/03/12/index.html
 https://github.com/pan-unit42/Wireshark-quizzes/blob/main/2023-04-Unit42-Wireshark-quiz.pcap.zip
 https://github.com/splunk/botsv3
 https://botsdataset.s3.amazonaws.com/botsv3/botsv3_data_set.tgz
+https://github.com/gchq/CyberChef/releases

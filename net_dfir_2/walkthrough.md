@@ -1,7 +1,9 @@
-# Scenario 2: IcedID Malware Analysis (Unit 42 Quiz)
+# IcedID Malware Analysis
 
 ## Background
 An Active Directory environment has been targeted by a malware campaign. You are tasked with analyzing the packet capture from the infected network. Your goal is to identify the source of the infection, the specific workstation compromised, and the attacker's persistent Command & Control (C2) infrastructure.
+
+*Note: This scenario uses a PCAP from Unit42.*
 
 ## Objectives
 1. Identify the IP address and filename of the initial IcedID payload.
@@ -52,5 +54,5 @@ To ensure the environment is ready for the next candidate, please perform the fo
 1. Close the web browser.
 2. In the terminal window, run the following command to reset the scenario:
    ```bash
-   ./scenario2.sh reset
+   ./scenario.sh reset
    ```

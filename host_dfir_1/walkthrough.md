@@ -1,4 +1,4 @@
-# Host Scenario 1: Reversing Obfuscated PowerShell
+# Reversing Obfuscated PowerShell
 
 ## Background
 During a routine sweep of a workstation, a suspicious PowerShell script was found in the `C:\Users\Public\Documents\` directory. The script appears to contain an encoded blob that is decoded and executed at runtime. Your goal is to use **CyberChef** to reveal the hidden command and understand what changes it makes to the system.

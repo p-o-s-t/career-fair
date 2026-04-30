@@ -1,7 +1,9 @@
-# Scenario 1: Remcos RAT Network Analysis
+# Remcos RAT Network Analysis
 
 ## Background
 A workstation on the internal network is suspected of being infected with the Remcos Remote Access Trojan (RAT) following a "ClickFix" social engineering attack. Your task is to analyze the provided network traffic to confirm the infection and identify key indicators of compromise (IOCs).
+
+*Note: This scenario uses a PCAP from malware-traffic-analysis.net.*
 
 ## Objectives
 1. Identify the suspicious DNS query that likely led to the infection.
@@ -9,7 +11,6 @@ A workstation on the internal network is suspected of being infected with the Re
 3. Determine what file was downloaded as part of the initial "ClickFix" activity.
 
 ## Guided Walkthrough
-
 ### Step 1: Access the Analysis Environment
 1. Open a web browser on the host machine.
 2. Navigate to `http://localhost:3000`. 

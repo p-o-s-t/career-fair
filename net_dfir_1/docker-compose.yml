@@ -12,5 +12,4 @@ services:
       - ./:/data
     ports:
       - 3000:3000 # Web UI
-      - 3001:3001 # HTTPS Web UI
     restart: unless-stopped

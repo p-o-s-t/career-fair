@@ -1,5 +1,4 @@
 #!/bin/bash
-
 # Management script for Host Scenario 2
 
 ACTION=$1        # start, stop, reset

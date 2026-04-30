@@ -1,7 +1,5 @@
 #!/bin/bash
-
 # Management script for Network Scenario 1
-
 ACTION=$1        # start, stop, reset
 
 if [[ -z "$ACTION" ]]; then

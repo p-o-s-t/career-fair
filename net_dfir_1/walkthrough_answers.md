@@ -1,4 +1,4 @@
-# Scenario 1: Remcos RAT Analysis - Answer Key
+# Remcos RAT Analysis - Answer Key
 
 ## Objective 1: Suspicious DNS Queries
 - **Malicious Domains Identified:**
@@ -26,5 +26,5 @@
 | Domain | `retrypoti.top` |
 | Domain | `forcebiturg.com` |
 | IP (C2) | `193.178.170.155` |
-| URL | `http://forcebiturg.com/boot` |
-| URL | `http://forcebiturg.com/proc` |
+| URL | `hxxp[://]forcebiturg.com/boot` |
+| URL | `hxxp[://]forcebiturg.com/proc` |
