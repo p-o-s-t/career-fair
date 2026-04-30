@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-    <h1>Attacker Scenario 2: Bind Shell</h1>
+    <h1>Exploit to Bind Shell</h1>
 
     <h2>Shells</h2>
     <p>The machine initiating the connection will determine the type of <b>Shell</b> that is opened by a malicious cyber actor.  Regardless of direction, one of the machines must be <b>Listening</b> for a connection, which is typically initiated by the Attacker on either their machine or the victim's machine.</p>
@@ -14,14 +14,14 @@
 
     <h2>Steps</h2>
     <h3>1. Service Identification</h3>
-    <p>Scan the target to find the <i>distcc</i> service. <code>nmap -Pn -sV -p3632 172.20.0.20</code></p>
+    <p>Scan the target to find the <i>distcc</i> service. <code>nmap -Pn -sV -p3632 172.30.0.30</code></p>
 
     <p>Look for port <b>3632</b>. It should be running <code>distcc v1</code>.</p>
 
-    <h3>2. Understanding Bind Shells (Forward Shells)</h3>
+    <h3>2. Understanding Bind Shells</h3>
     <p>In this scenario, we're going to explore the concept of a <b>Bind Shell</b>. Unlike a Reverse Shell (where the target calls you), a Bind Shell is when the target machine "binds" a shell to a specific port and waits for <i>you</i> to connect to it.</p>
     <br>
-    <center><img src="./shells.gif" alt="Bind vs Reverse" width=800 height=600></center>
+    <center><img src="./sysdig_shells.png" alt="Bind vs Reverse" width=1200 height=600></center>
     <br>
     <p>This is often used when:</p>
     <ol>

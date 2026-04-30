@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-    <h1>Attacker Scenario 1: Web Enumeration and Command Injection</h1>
+    <h1>Web Enumeration and Command Injection</h1>
 
     <h2>Objective</h2>
     <p>Identify a vulnerable web application on a highly insecure host, explore its functionality, and exploit a Command Injection vulnerability to retrieve a hidden flag.</p>
@@ -10,11 +10,13 @@
 
     <h2>Steps</h2>
     <h3>1. Enumeration</h3>
-    <p>First, let's see what services are running on the target.  <i>NOTE: You will see a large number of open ports! This is typical of a poorly secured legacy server. For this exercise, we will focus on the web service.</i></p>
+    <p>First, let's see what services are running on the target.</p>
     
-    <p>Open a terminal on your workstation: <code>nmap -sV -p80,443,8000,8080,8443 172.20.0.10</code></p>
+    <p><i>NOTE: You will see a large number of open ports! This is typical of a poorly secured legacy server. For this exercise, we will focus on the web service.</i></p>
+    
+    <p>Open a terminal on your workstation and run the command: <code>nmap -sV -p80,443,8000,8080,8443 172.20.0.10</code></p>
 
-    <p>Confirm that port 80 (HTTP) is open and running Apache.</p>
+    <p>Look over the out put and confirm that port 80 (HTTP) is open and running Apache.</p>
 
     <h3>2. Investigation</h3>
     <p>Open a browser and navigate to <i><a href="http://172.20.0.10">http://172.20.0.10</a></i>. The application seems to be a "Network Diagnostics Tool" that allows users to ping an IP address.</p>

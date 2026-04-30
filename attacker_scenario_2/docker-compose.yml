@@ -4,7 +4,7 @@ services:
     container_name: attacker_scenario_2_target
     networks:
       scenario_2_net:
-        ipv4_address: 172.20.0.20
+        ipv4_address: 172.30.0.30
     command: >
       sh -c "echo 'FLAG{Vsftpd_B4ckd00r_Pwn3d}' > /flag.txt && /bin/services.sh && tail -f /dev/null"
 
@@ -14,4 +14,4 @@ networks:
     driver: bridge
     ipam:
       config:
-        - subnet: 172.20.0.0/24
+        - subnet: 172.30.0.0/24
