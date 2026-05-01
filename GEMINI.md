@@ -1,8 +1,8 @@
 ## Purpose - Career Fair Planning and Set Up
-This project provides a playground environment using a device running Ubuntu. It includes guided walkthroughs for enumeration, exploitation, host-based digital forensics/incident response (DFIR), and network-based DFIR. The goal is to provide prospective candidates with a hands-on look at cybersecurity roles in a controlled, non-overwhelming environment.
+This project provides a playground environment using a device using a Linux distribution (this project used Ubuntu 24.04). It includes guided walkthroughs for enumeration, exploitation, host-based digital forensics/incident response (DFIR), and network-based DFIR. The goal is to provide prospective candidates with a hands-on look at cybersecurity roles in a controlled, non-overwhelming environment.
 
 ## Design
-- **Environment:** Device using Ubuntu 24.04
+- **Environment:** Device using Ubuntu 24.04 (recommended, not required)
 - **Architecture:** Container-centric (Docker). Scenarios run as ephemeral containers.
 - **Connectivity:** Designed for offline use; images are pre-loaded locally.
 - **Persistence:** Containers are non-persistent; a "Reset" returns them to a clean base state.
@@ -26,11 +26,11 @@ This project provides a playground environment using a device running Ubuntu. It
 ### Attacker (Red Team)
 #### Web 
 1.  **Enumeration & Command Injection**
-    - **Tools:** `nmap`, `curl`, Browser.
+    - **Tools:** `nmap`, `curl`, web browser.
     - **Tasks:** Scan a Metasploitable target, identify a vulnerable "Network Diagnostics" tool, and exploit command injection to retrieve a hidden flag.
 #### Software
 1.  **Exploit Research & Bind Shells**
-    - **Tools:** `nmap`, `msfconsole`, `nc`, `python3`.
+    - **Tools:** `nmap`, `nc`, `python3`.
     - **Tasks:** Identify the `distcc` service, exploit it using a custom Python script or Metasploit to open a persistent bind shell, and connect back to gain root access.
 
 ### DFIR (Blue Team)

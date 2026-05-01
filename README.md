@@ -9,7 +9,7 @@ The following utilities will be needed for the scenarios:
 - Git
 
 ## Setup
-1. Clone and move into this repo to the device(s) you plan to use for the career fair
+1. Clone and move into this repo on the device(s) you plan to use for your career fair.
 
 ```bash
 git clone https://github.com/p-o-s-t/career-fair
@@ -43,9 +43,9 @@ rm mta.zip
 ```
 
 ## Running Scenarios 
-1. Open a terminal, such as GNOME Terminal.
+1. Open a terminal, such as GNOME Terminal, and arrange it so it takes up half of the screen.
 
-2. Open `./index.html` to access a local web page with links to all of the walkthroughs. Gives the participants a 'Choose Your Own Adventure' opportunity.
+2. In the other half of the screen, use your preferred web browser to open `./index.html`. This local web page with links to all of the walkthroughs. Gives the participants the 'Choose Your Own Adventure' opportunity.
 
 3. Participants can select which scenario they want to try out by changing into that directory. There are 2 scenarios for each category: Attacker, Host DFIR, and Network DFIR.  Each scenario has a hyperlink to a walkthrough rewritten in HTML.
 
