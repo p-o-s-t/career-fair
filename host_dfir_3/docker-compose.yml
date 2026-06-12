@@ -1,0 +1,12 @@
+services:
+  investigation_target:
+    image: ubuntu:24.04
+    container_name: host_dfir_3_target
+    volumes:
+      - ./assets/auth.log:/var/log/auth.log:ro
+      - ./assets/bash_history:/root/.bash_history:ro
+      - ./assets/php-session-cleanup:/etc/cron.d/php-session-cleanup:ro
+      - ./assets/www:/var/www/html:ro
+      - ./assets/.systemd-login:/dev/shm/.systemd-login:ro
+    command: tail -f /dev/null
+    restart: unless-stopped

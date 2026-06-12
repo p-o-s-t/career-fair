@@ -10,9 +10,9 @@ During a routine sweep of a workstation, a suspicious PowerShell script was foun
 
 ## Walkthrough
 ### Step 1: Open CyberChef
-1. Open a web browser and select the bookmark for CyberChef.  This will open a local copy of **CyberChef** that is located in the `host_dfir/host_scenario_1` directory.
+1. Open a web browser and select the bookmark for CyberChef.  This will open a local copy of **CyberChef** that is located in the `host_dfir_1` directory.
 
-2. Once CyberChef is open, select the rectangle with an arrow pointed towards the right to import a file from the system.  Import `host_dfir/host_scenario_1/encoded_malware.ps1`.
+2. Once CyberChef is open, select the rectangle with an arrow pointed towards the right to import a file from the system.  Import `host_dfir_1/what_does_this_do.ps1`.
 
 ### Step 2: Decode the Payload
 1. There is some encoded data contained within this PowerShell script.  Identify it, copy the encoded data, and pastse it into a new input tab by selecting the plus sign in the top right.

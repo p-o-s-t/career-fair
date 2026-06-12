@@ -7,20 +7,34 @@ The following utilities will be needed for the scenarios:
 - Nmap
 - Docker
 - Git
+- Yara
+- File
 
 ## Setup
+
+### Option A: Automatic Setup (Recommended)
+Simply run the setup script in the root directory to verify requirements and download/configure all assets automatically:
+
+```bash
+chmod +x setup.sh
+./setup.sh
+```
+
+### Option B: Manual Setup
+If you prefer to set up the environment manually:
+
 1. Clone and move into this repo on the device(s) you plan to use for your career fair.
 
 ```bash
 git clone https://github.com/p-o-s-t/career-fair
-cd career_fair
+cd career-fair
 ```
 
 2. Download and extract the Boss of the SOC version 3 dataset.
 
 ```bash
 wget https://botsdataset.s3.amazonaws.com/botsv3/botsv3_data_set.tgz
-tar -xzf botsv3_data_set.tgz -C ./host_dfir/host_scenario_2/
+tar -xzf botsv3_data_set.tgz -C ./host_dfir_2/
 rm botsv3_data_set.tgz
 ```
 
@@ -28,7 +42,7 @@ rm botsv3_data_set.tgz
 
 ```bash
 wget https://gchq.github.io/CyberChef/CyberChef_v11.0.0.zip
-mkdir host_dfir_1/CyberChef
+mkdir -p host_dfir_1/cyberchef
 unzip CyberChef_v11.0.0.zip -d host_dfir_1/cyberchef
 rm CyberChef_v11.0.0.zip
 ```

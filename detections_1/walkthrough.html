@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Writing YARA Rules for Suspicious Binaries</title>
+</head>
+<body>
+    <h1>Writing YARA Rules for Suspicious Binaries</h1>
+
+    <h2>Background</h2>
+    <p>In cybersecurity, writing detection signatures is a key duty of Security Analysts, Incident Responders, and Threat Hunters. One of the most popular tools for this is <b>YARA</b>, which allows analysts to create rules to identify files based on textual or binary patterns (known as rulesets).</p>
+    <p>In this scenario, a compiled binary <code>suspicious_binary</code> was flagged by an automated network filter. The file is actually benign (it performs a system integrity check and exits), but it contains plaintext indicators that make it look suspicious. Your goal is to inspect the binary, identify these indicators, and write a YARA rule that triggers a detection alert on the binary.</p>
+    <p><i>Note: This scenario runs directly on your local workstation.</i></p>
+
+    <h2>Objectives</h2>
+    <ol>
+        <li>Determine the file type of <code>suspicious_binary</code> using a system tool.</li>
+        <li>Determine the SHA256 hash of <code>suspicious_binary</code> without using a guided command.</li>
+        <li>Inspect the strings inside the binary to find indicators of compromise (IoCs) and identify any obfuscated strings.</li>
+        <li>Create a YARA rule file named <code>my_rule.yar</code> targeting these indicators.</li>
+        <li>Test your YARA rule against the binary.</li>
+    </ol>
+
+    <h2>Walkthrough</h2>
+
+    <h3>Step 1: File Analysis & Metadata Identification</h3>
+    <p>Open your terminal and navigate to the <code>detections_1</code> scenario directory:</p>
+    <pre><code>cd detections_1</code></pre>
+
+    <ol>
+        <li><b>Identify the File Type</b>:<br>
+            Use the <code>file</code> utility to determine what kind of file <code>suspicious_binary</code> is:
+            <pre><code>file suspicious_binary</code></pre>
+            <p><i>Question: What is the file type and architecture of the binary?</i></p>
+        </li>
+        <li><b>Calculate the Checksum</b>:<br>
+            Calculate the <b>SHA256</b> checksum of the <code>suspicious_binary</code> file.<br>
+            <i>(Think about what command-line tool you would use on a Linux system to calculate a SHA256 hash).</i>
+            <p><i>Question: What is the SHA256 hash of the binary?</i></p>
+        </li>
+    </ol>
+
+    <h3>Step 2: Inspect Strings & Analyze Obfuscation</h3>
+    <ol>
+        <li>Run the binary directly to see its behavior:
+            <pre><code>./suspicious_binary</code></pre>
+            <p>Notice that it runs a benign system integrity check and does not output any other information.</p>
+        </li>
+        <li>Run <code>strings</code> on the binary to perform static analysis and search for any suspicious indicators (such as external domain URLs or custom User-Agents):
+            <pre><code>strings suspicious_binary</code></pre>
+            <p><i>Question: Can you find the C2 URL (http://malicious-c2-server.net...) and User-Agent (MaliciousAgent...) in the strings output?</i></p>
+        </li>
+        <li>Try to search for the registry key <code>Software\Microsoft\Windows\CurrentVersion\Run\Backdoor</code> using <code>grep</code>:
+            <pre><code>strings suspicious_binary | grep "Backdoor"</code></pre>
+            <p>Notice that it returns <b>no results</b>! To evade simple static string matches, the attacker has <i>reversed</i> the registry key string inside the binary, and reconstructs it dynamically in memory only when printing.</p>
+        </li>
+        <li>Search the <code>strings</code> output for the reversed registry key (or search for the string <code>roodkcaB</code>):
+            <pre><code>strings suspicious_binary | grep "roodkcaB"</code></pre>
+            <p><i>Question: What is the full reversed registry key string found in the binary?</i></p>
+        </li>
+        <li>Try to search the binary strings for the word "FLAG":
+            <pre><code>strings suspicious_binary | grep "FLAG"</code></pre>
+            <p>Notice that it returns <b>no results</b>! By default, the <code>strings</code> command only extracts 1-byte ASCII strings. The flag in this binary has been stored as a <b>UTF-16 wide string</b> (2-byte characters) to evade simple scanners.</p>
+        </li>
+        <li>Search the binary for 16-bit little-endian wide strings by passing the <code>-el</code> flag to <code>strings</code>:
+            <pre><code>strings -el suspicious_binary | grep "FLAG"</code></pre>
+            <p><i>Question: What is the hidden flag found inside the binary?</i></p>
+        </li>
+    </ol>
+
+    <h3>Step 3: Write the YARA Rule</h3>
+    <ol>
+        <li>In the <code>detections_1</code> directory, create a new file named <code>my_rule.yar</code> using your preferred text editor.</li>
+        <li>Write a YARA rule. A basic YARA rule structure:
+<pre><code>rule Detect_Suspicious_IntegrityCheck
+{
+    meta:
+        description = "Detects a suspicious integrity check tool containing static C2 indicators"
+        author = "Security Analyst"
+        sha256 = "<FILL_IN_SHA256_HASH_HERE>"
+
+    strings:
+        $c2_domain = "<FILL_IN_C2_URL_OR_DOMAIN>" ascii
+        $user_agent = "<FILL_IN_SUSPICIOUS_USER_AGENT>" ascii
+        $reg_key_reversed = "<FILL_IN_REVERSED_REGISTRY_KEY>" ascii
+        $flag = "<FILL_IN_EXFILTRATED_FLAG_HERE>" wide
+
+    condition:
+        $c2_domain and ($user_agent or $reg_key_reversed or $flag)
+}</code></pre>
+        <p><i>(Note: The <code>wide</code> modifier tells YARA to search for the UTF-16 wide string encoding of the flag, while <code>ascii</code> tells it to search for standard 1-byte ASCII representations).</i></p></code></pre>
+        </li>
+        <li>Save the file.</li>
+    </ol>
+
+    <h3>Step 4: Test the YARA Rule</h3>
+    <ol>
+        <li>Run YARA in your terminal, passing your rule file and the target binary:
+            <pre><code>yara my_rule.yar suspicious_binary</code></pre>
+        </li>
+        <li>If your rule matches, YARA will print the rule name followed by the file path:
+            <pre><code>Detect_Suspicious_IntegrityCheck suspicious_binary</code></pre>
+        </li>
+        <li>If it doesn't output anything, check your strings or condition in <code>my_rule.yar</code> to ensure they match exactly!</li>
+    </ol>
+
+    <h2>Cleanup</h2>
+    <p>Once you have successfully matched the rule and retrieved the flag, stop the environment by deleting the compiled binary or leaving it as is. There is no active container to stop.</p>
+</body>
+</html>

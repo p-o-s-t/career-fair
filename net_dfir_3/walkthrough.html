@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DNS Tunneling Detection & Data Exfiltration</title>
+</head>
+<body>
+    <h1>DNS Tunneling Detection & Data Exfiltration</h1>
+
+    <h2>Background</h2>
+    <p>A security alert was triggered by an internal intrusion detection system (IDS) flagging anomalous DNS activity. A workstation on the corporate network appears to be communicating with an external nameserver via unusually high volume and large DNS TXT queries. As a Network Security Analyst, you must analyze the captured traffic to determine if DNS tunneling was used to exfiltrate sensitive data, identify what domain was involved, and reconstruct the stolen data.</p>
+
+    <h2>Objectives</h2>
+    <ol>
+        <li>Identify the internal client IP and the C2/nameserver domain name.</li>
+        <li>Filter for the anomalous DNS traffic in Wireshark.</li>
+        <li>Extract the encoded exfiltration chunks.</li>
+        <li>Use CyberChef to decode the exfiltrated payloads and recover the stolen file containing the secret flag.</li>
+    </ol>
+
+    <h2>Walkthrough</h2>
+
+    <h3>Step 1: Start the Scenario</h3>
+    <ol>
+        <li>Open a terminal and start the Wireshark container:
+            <pre><code>./net_dfir_3/scenario.sh start</code></pre>
+        </li>
+        <li>Open a web browser and navigate to <code>http://localhost:3004</code>. This opens a web-based instance of Wireshark running inside a container.</li>
+        <li>In Wireshark, click on <b>File</b> -&gt; <b>Open</b>, navigate to <code>/data/</code>, and open <code>scenario_3.pcap</code>.</li>
+    </ol>
+
+    <h3>Step 2: Analyze DNS Traffic</h3>
+    <ol>
+        <li>Apply a filter to display only DNS query packets:
+            <pre><code>dns</code></pre>
+        </li>
+        <li>Look through the queries. You will see some background traffic (e.g., google.com, github.com).</li>
+        <li>Identify the unusual queries. Notice a large number of queries targeting subdomains of <code>tunnel.c2server.org</code> with long, hexadecimal strings (e.g., <code>0.434f4e46...</code>).</li>
+        <li>Answer the following questions:
+            <ul>
+                <li>What is the IP address of the compromised client?</li>
+                <li>What is the malicious parent domain name used for the exfiltration tunnel?</li>
+                <li>What DNS query type (e.g., A, AAAA, TXT, MX) was used to carry the payload?</li>
+            </ul>
+        </li>
+    </ol>
+
+    <h3>Step 3: Extract the Payload Chunks</h3>
+    <ol>
+        <li>The subdomains are prefixed with an index number (e.g., <code>0.</code>, <code>1.</code>, <code>2.</code>) followed by a hexadecimal string.</li>
+        <li>Document each hex string in order:
+            <ul>
+                <li>Chunk 0: <code>434f4e464944454e5449414c202d2049</code></li>
+                <li>Chunk 1: <code>4e5445524e414c204f4e4c590a50726f</code></li>
+                <li>... and so on.</li>
+            </ul>
+        </li>
+        <li>Concatenate all of the hexadecimal strings together into one continuous string.
+            <p><i>Tip: You can extract these easily by looking at the packet list, or copy them directly.</i></p>
+        </li>
+    </ol>
+
+    <h3>Step 4: Reconstruct and Decode the File</h3>
+    <ol>
+        <li>Open a web browser and access your local CyberChef instance (under <code>http://localhost/</code> or the bookmark you used in Host Scenario 1). Alternatively, use a public instance or standard decoding tools.</li>
+        <li>Paste the full, concatenated hexadecimal string into the <b>Input</b> pane.</li>
+        <li>Drag the <b>From Hex</b> operation into the <b>Recipe</b> pane.</li>
+        <li>Examine the <b>Output</b> pane! You should see the cleartext contents of the exfiltrated document.</li>
+        <li>Answer the following questions:
+            <ul>
+                <li>What is the name of the project mentioned in the exfiltrated file?</li>
+                <li>What is the secret flag contained within the document?</li>
+            </ul>
+        </li>
+    </ol>
+
+    <h2>Cleanup</h2>
+    <p>Once you have retrieved the flag, stop the environment:</p>
+    <pre><code>./net_dfir_3/scenario.sh stop</code></pre>
+</body>
+</html>

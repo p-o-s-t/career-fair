@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linux Log Investigation & Persistence Hunt</title>
+</head>
+<body>
+    <h1>Linux Log Investigation & Persistence Hunt</h1>
+
+    <h2>Background</h2>
+    <p>A Linux-based web server hosting critical infrastructure was compromised. Security alerts indicated unusual network traffic originating from the machine. As a Security Analyst, you are tasked with conducting live forensics on the compromised server to understand how the attacker gained access, what actions they performed, and how they established persistence.</p>
+
+    <h2>Objectives</h2>
+    <ol>
+        <li>Identify the attacker's IP address and the brute-forced user accounts.</li>
+        <li>Determine the time and target of the successful compromise.</li>
+        <li>Investigate the actions taken by the attacker after gaining access, including secondary infrastructure identified.</li>
+        <li>Locate and analyze the obfuscated persistence mechanism.</li>
+    </ol>
+
+    <h2>Walkthrough</h2>
+
+    <h3>Step 1: Start the Scenario and Connect</h3>
+    <ol>
+        <li>Ensure the scenario is running:
+            <pre><code>./host_dfir_3/scenario.sh start</code></pre>
+        </li>
+        <li>Gain access to the server's shell to perform your investigation:
+            <pre><code>docker exec -it host_dfir_3_target /bin/bash</code></pre>
+        </li>
+    </ol>
+
+    <h3>Step 2: Analyze Authentication Logs</h3>
+    <ol>
+        <li>Examine the authentication logs at <code>/var/log/auth.log</code> to investigate the initial access:
+            <pre><code>cat /var/log/auth.log</code></pre>
+            <p><i>Tip: Since there are thousands of entries in this log, use <code>grep</code> to filter for common authentication keywords like "Failed" or "Accepted".</i></p>
+        </li>
+        <li>Answer the following questions:
+            <ul>
+                <li>What IP address was brute-forcing the SSH service?</li>
+                <li>What user accounts did the attacker attempt to brute force?</li>
+                <li>Which account was successfully compromised, and at what timestamp?</li>
+            </ul>
+        </li>
+    </ol>
+
+    <h3>Step 3: Audit Attacker Commands (Command History)</h3>
+    <ol>
+        <li>Check the command history of the root user to trace what the attacker did once inside:
+            <pre><code>cat /root/.bash_history</code></pre>
+        </li>
+        <li>Review the command history to answer:
+            <ul>
+                <li>What directory did the attacker navigate to first?</li>
+                <li>What file did they create in the web directory, and what does it do?</li>
+                <li>The attacker downloaded a script. What is the URL of the download source, and where was the file saved locally? (Notice the IP address used to host the download!)</li>
+            </ul>
+        </li>
+    </ol>
+
+    <h3>Step 4: Hunt for Persistence (Payload Analysis)</h3>
+    <ol>
+        <li>In Step 3, you saw that the attacker scheduled a cron job. Let's inspect the cron configuration file they created:
+            <pre><code>cat /etc/cron.d/php-session-cleanup</code></pre>
+        </li>
+        <li>Now, inspect the script that is being executed by the cron job:
+            <pre><code>cat /dev/shm/.systemd-login</code></pre>
+        </li>
+        <li>Answer the following questions:
+            <ul>
+                <li>What type of payload is stored inside <code>/dev/shm/.systemd-login</code>?</li>
+                <li>What IP address and port does the payload attempt to connect back to? (Is this different from the SSH brute-force source IP?)</li>
+            </ul>
+        </li>
+    </ol>
+
+    <h2>Cleanup</h2>
+    <p>Once you have documented all findings, exit the container shell (<code>exit</code>) and stop the environment:</p>
+    <pre><code>./host_dfir_3/scenario.sh stop</code></pre>
+</body>
+</html>

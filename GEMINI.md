@@ -10,15 +10,15 @@ This project provides a playground environment using a device using a Linux dist
 ## Project Structure
 ```text
 /
-├── attacker/       # Red Team / Offensive Scenarios
-│   ├── attacker_scenario_1/   # Web Enumeration & Command Injection
-│   └── attacker_scenario_2/   # Distcc Exploit & Bind Shells
-├── host_dfir/      # Host Forensics Scenarios
-│   ├── host_scenario_1/       # PowerShell Malware Analysis (CyberChef)
-│   └── host_scenario_2/       # Splunk-based Investigation (BOTSv3)
-└── network_dfir/   # Network Forensics Scenarios
-    ├── network_scenario_1/    # Traffic Analysis (Wireshark/PCAP)
-    └── network_scenario_2/    # Advanced Traffic Analysis
+├── attacker_scenario_1/   # Web Enumeration & Command Injection
+├── attacker_scenario_2/   # Distcc Exploit & Bind Shells
+├── host_dfir_1/           # PowerShell Malware Analysis (CyberChef)
+├── host_dfir_2/           # Splunk-based Investigation (BOTSv3)
+├── host_dfir_3/           # Linux Log Investigation & Persistence Hunt
+├── net_dfir_1/            # Traffic Analysis (Wireshark/PCAP)
+├── net_dfir_2/            # Advanced Traffic Analysis
+├── net_dfir_3/            # DNS Tunneling Detection & Data Exfiltration
+└── detections_1/          # YARA Rules (Benign but Suspicious Binary)
 ```
 
 ## Walkthrough Summaries
@@ -41,6 +41,9 @@ This project provides a playground environment using a device using a Linux dist
 2.  **Splunk Investigation**
     - **Tools:** Splunk Enterprise (Dockerized).
     - **Tasks:** Query the BOTSv3 dataset to trace an attacker's activities across a Windows environment, identifying infected hosts and malicious processes.
+3.  **Linux Log Investigation & Persistence Hunt**
+    - **Tools:** Linux CLI (shell, grep, find).
+    - **Tasks:** Audit authentication logs (auth.log) for brute-force attacks, trace commands in bash history, and locate a hidden web shell and cron job persistence mechanism.
 
 #### Network
 1.  **Scenario 1: Basic Traffic Analysis**
@@ -49,6 +52,14 @@ This project provides a playground environment using a device using a Linux dist
 2.  **Scenario 2: Advanced Network Forensics**
     - **Tools:** Wireshark.
     - **Tasks:** Deep dive into a large capture file to track complex multi-stage attacks and reconstruct the attacker's network-level timeline.
+3.  **Scenario 3: DNS Tunneling Detection & Data Exfiltration**
+    - **Tools:** Wireshark, CyberChef.
+    - **Tasks:** Analyze DNS query logs in a PCAP file, identify anomalous TXT records representing exfiltrated data, and use CyberChef to decode and reconstruct the stolen sensitive file.
+
+#### Detections
+1.  **Writing YARA Rules for Suspicious Binaries**
+    - **Tools:** YARA.
+    - **Tasks:** Inspect a compiled benign binary containing suspicious strings (C2 URL, registry key, custom User-Agent), identify indicators of compromise, and write a YARA rule that triggers a match on it.
 
 ## Operational Commands
 Each scenario directory contains a `scenario.sh` script to manage the life cycle:
