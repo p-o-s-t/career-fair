@@ -27,7 +27,6 @@ MISSING_PREREQS=0
 check_command "wget" || MISSING_PREREQS=1
 check_command "unzip" || MISSING_PREREQS=1
 check_command "tar" || MISSING_PREREQS=1
-check_command "gcc" || MISSING_PREREQS=1
 check_command "yara" || MISSING_PREREQS=1
 check_command "file" || MISSING_PREREQS=1
 
@@ -47,7 +46,7 @@ if [ $MISSING_PREREQS -eq 1 ]; then
   echo -e "\n${RED}[ERROR] Please install the missing prerequisites before running setup.${NC}"
   echo -e "On Ubuntu/Debian, you can install them using:"
   echo -e "  sudo apt-get update"
-  echo -e "  sudo apt-get install -y wget unzip tar gcc yara file docker.io docker-compose-plugin"
+  echo -e "  sudo apt-get install -y wget unzip tar yara file docker.io docker-compose-plugin"
   exit 1
 fi
 
@@ -116,15 +115,6 @@ else
     rm -f mta.zip
     exit 1
   fi
-fi
-
-# Step 4: Detections Scenario 1
-echo -e "\n${YELLOW}[*] Step 4: Compiling suspicious binary for Detections Scenario 1...${NC}"
-if gcc -o ./detections_1/suspicious_binary ./detections_1/suspicious_binary.c; then
-  echo -e "${GREEN}[+] suspicious_binary compiled successfully.${NC}"
-else
-  echo -e "${RED}[ERROR] Failed to compile suspicious_binary.${NC}"
-  exit 1
 fi
 
 echo -e "\n${BLUE}==================================================${NC}"
