@@ -49,7 +49,7 @@
         </li>
         <li>Run <code>strings</code> on the binary to perform static analysis and search for any suspicious indicators (such as external domain URLs or custom User-Agents):
             <pre><code>strings suspicious_binary</code></pre>
-            <p><i>Question: Can you find the C2 URL (http://malicious-c2-server.net...) and User-Agent (MaliciousAgent...) in the strings output?</i></p>
+            <p><i>Question: Can you find the C2 URL and User-Agent in the strings output?</i></p>
         </li>
         <li>Try to search for the registry key <code>Software\Microsoft\Windows\CurrentVersion\Run\Backdoor</code> using <code>grep</code>:
             <pre><code>strings suspicious_binary | grep "Backdoor"</code></pre>
@@ -77,17 +77,15 @@
 {
     meta:
         description = "Detects a suspicious integrity check tool containing static C2 indicators"
-        author = "Security Analyst"
+        author = "<FILL_IN_YOUR_NAME_HERE>"
         sha256 = "<FILL_IN_SHA256_HASH_HERE>"
-
     strings:
-        $c2_domain = "<FILL_IN_C2_URL_OR_DOMAIN>" ascii
-        $user_agent = "<FILL_IN_SUSPICIOUS_USER_AGENT>" ascii
-        $reg_key_reversed = "<FILL_IN_REVERSED_REGISTRY_KEY>" ascii
+        $c2_domain = "<FILL_IN_C2_URL_OR_DOMAIN>"
+        $user_agent = "<FILL_IN_SUSPICIOUS_USER_AGENT>"
+        $reg_key_reversed = "<FILL_IN_REVERSED_REGISTRY_KEY>" # you will have to use \\ to escape the back slash
         $flag = "<FILL_IN_EXFILTRATED_FLAG_HERE>" wide
-
     condition:
-        $c2_domain and ($user_agent or $reg_key_reversed or $flag)
+        all of them 
 }</code></pre>
         <p><i>(Note: The <code>wide</code> modifier tells YARA to search for the UTF-16 wide string encoding of the flag, while <code>ascii</code> tells it to search for standard 1-byte ASCII representations).</i></p></code></pre>
         </li>

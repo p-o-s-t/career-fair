@@ -29,16 +29,12 @@
     <pre><code>./attacker_scenario_2/scenario.sh start</code></pre>
 
     <h3>2. Service Identification</h3>
-    <p>Scan the target to find the <i>distcc</i> service: <code>nmap -Pn -sV -p3632 172.30.0.30</code></p>
+    <p>Scan the target to find the <i>distcc</i> service: <code>nmap -Pn -sV -p3500-3700 172.30.0.30</code></p>
     <p>Look for port <b>3632</b>. It should be running <code>distcc v1</code>.</p>
 
     <h3>3. Understanding Bind Shells</h3>
     <p>In this scenario, we're going to explore the concept of a <b>Bind Shell</b>. Unlike a Reverse Shell (where the target calls you), a Bind Shell is when the target machine "binds" a shell to a specific port and waits for <i>you</i> to connect to it.</p>
-    <p>This is often used when:</p>
-    <ol>
-        <li>The attacker's machine is behind a firewall or NAT that prevents incoming connections.</li>
-        <li>The target machine is allowed to have new listening ports.</li>
-    </ol>
+    <p>This is often used when the target machine is allowed to have new listening ports and traffic can be forwarded to the device.</li>
 
     <h3>4. Trigger the Exploit</h3>
     <p>We will use the Python script provided in this directory to send a malicious command to the <code>distcc</code> service. This command will tell the target to start a listener on port 4444 and attach a shell to it.</p>
