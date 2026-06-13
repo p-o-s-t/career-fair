@@ -28,7 +28,7 @@ check_command "wget" || MISSING_PREREQS=1
 check_command "unzip" || MISSING_PREREQS=1
 check_command "tar" || MISSING_PREREQS=1
 check_command "yara" || MISSING_PREREQS=1
-check_command "file" || MISSING_PREREQS=1
+check_command "nmap" || MISSING_PREREQS=1
 
 # Check docker
 if ! command -v docker &>/dev/null; then
@@ -46,7 +46,7 @@ if [ $MISSING_PREREQS -eq 1 ]; then
   echo -e "\n${RED}[ERROR] Please install the missing prerequisites before running setup.${NC}"
   echo -e "On Ubuntu/Debian, you can install them using:"
   echo -e "  sudo apt-get update"
-  echo -e "  sudo apt-get install -y wget unzip tar yara file docker.io docker-compose-plugin"
+  echo -e "  sudo apt-get install -y wget unzip tar yara nmap docker.io docker-compose-plugin"
   exit 1
 fi
 

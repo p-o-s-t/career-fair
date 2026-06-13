@@ -8,7 +8,6 @@ The following utilities will be needed for the scenarios:
 - Docker
 - Git
 - Yara
-- File
 
 ## Setup
 
