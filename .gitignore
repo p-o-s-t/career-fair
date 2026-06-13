@@ -7,6 +7,12 @@ host_dfir_1/cyberchef/
 # Ignore downloaded scenario PCAP
 net_dfir_1/scenario_1.pcap
 
+# Ignore downloaded archives/packages
+*.zip
+*.tgz
+*.tar.gz
+*.tar
+
 # Temporary and backup files
 *~
 *.swp

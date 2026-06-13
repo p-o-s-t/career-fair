@@ -84,7 +84,7 @@ if [ -d "$CYBERCHEF_DIR" ]; then
   echo -e "${GREEN}[+] $CYBERCHEF_DIR already exists. Skipping download.${NC}"
 else
   echo -e "Downloading CyberChef v11.0.0..."
-  if wget -O CyberChef_v11.0.0.zip https://gchq.github.io/CyberChef/CyberChef_v11.0.0.zip; then
+  if wget -O CyberChef_v11.0.0.zip https://github.com/gchq/CyberChef/releases/download/v11.0.0/CyberChef_v11.0.0.zip; then
     echo -e "Extracting CyberChef to $CYBERCHEF_DIR..."
     mkdir -p "$CYBERCHEF_DIR"
     unzip -q CyberChef_v11.0.0.zip -d "$CYBERCHEF_DIR"

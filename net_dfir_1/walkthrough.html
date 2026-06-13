@@ -22,10 +22,12 @@
 
     <h2>Guided Walkthrough</h2>
 
-    <h3>Step 1: Access the Analysis Environment</h3>
+    <h3>Step 1: Start the Scenario</h3>
     <ol>
-        <li>Open a web browser on the host machine.</li>
-        <li>Navigate to <code>http://localhost:3000</code>.</li>
+        <li>Open a terminal and run the following command to start the scenario:
+            <pre><code>./net_dfir_1/scenario.sh start</code></pre>
+        </li>
+        <li>Open a web browser on the host machine and navigate to <code>http://localhost:3000</code>.</li>
         <li>You will see a desktop environment containing <b>Wireshark</b>.</li>
     </ol>
 
@@ -66,9 +68,9 @@
     <p>To ensure the environment is ready for the next candidate, please perform the following steps:</p>
     <ol>
         <li>Close the web browser.</li>
-        <li>In the terminal window, run the following command to reset the scenario:
-            <pre><code>./net_dfir_1/scenario.sh reset</code></pre>
-            <p><i>This will wipe all changes and restart the analysis environment from its original state.</i></p>
+        <li>In the terminal window, run the following command to stop the scenario:
+            <pre><code>./net_dfir_1/scenario.sh stop</code></pre>
+            <p><i>This will shut down the analysis environment.</i></p>
         </li>
     </ol>
 </body>

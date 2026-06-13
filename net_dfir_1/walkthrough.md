@@ -11,9 +11,12 @@ A workstation on the internal network is suspected of being infected with the Re
 3. Determine what file was downloaded as part of the initial "ClickFix" activity.
 
 ## Guided Walkthrough
-### Step 1: Access the Analysis Environment
-1. Open a web browser on the host machine.
-2. Navigate to `http://localhost:3000`. 
+### Step 1: Start the Scenario
+1. Open a terminal and run the following command to start the scenario:
+   ```bash
+   ./net_dfir_1/scenario.sh start
+   ```
+2. Open a web browser on the host machine and navigate to `http://localhost:3000`. 
 3. You will see a desktop environment containing **Wireshark**.
 
 ### Step 2: Open the PCAP
@@ -47,8 +50,8 @@ Once you have identified the C2 IP, the port, and the malicious domain, you have
 ## Cleanup & Reset
 To ensure the environment is ready for the next candidate, please perform the following steps:
 1. Close the web browser.
-2. In the terminal window, run the following command to reset the scenario:
+2. In the terminal window, run the following command to stop the scenario:
    ```bash
-   ./scenario1.sh reset
+   ./net_dfir_1/scenario.sh stop
    ```
-   *This will wipe all changes and restart the analysis environment from its original state.*
+   *This will shut down the analysis environment.*
